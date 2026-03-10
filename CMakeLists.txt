@@ -5,7 +5,6 @@ set(CMAKE_AUTORCC ON)
 add_library(CoreLib
     source/EngineCore.cpp
     source/EngineCore.h
-    source/Test.cpp
     ${CORE_MOC_FILES}
 )
 

@@ -12,41 +12,18 @@ void EngineCore::updateResolution(float width, float height)
     }
 }
 
-// Preset shaders for testing - GUI will make it more flexible
-static const std::vector<ShaderProgramFilenameStrings> shaderFilenames
-{
-    {"lightSource", "vertexShaderLightTest.vs", "fragmentShaderLightSource.fs"},
-    {"normalObject", "vertexShaderLightTest.vs", "fragmentShaderLightTest.fs"}
-};
-
-void EngineCore::initTestModule()
-{
-    TestObjects testObjects;
-    testObjects.textureManager  = m_textureManagerModule.get();
-    testObjects.shaderManager   = m_shaderManagerModule.get(); 
-    testObjects.entityManager   = m_entityManagerModule.get();
-    testObjects.materialManager = m_materialManagerModule.get();
-    testObjects.meshManager     = m_meshManagerModule.get();
-    testObjects.lightingSystem   = m_lightingSystemModule.get();
-
-    m_testModule = std::make_unique<Test>(testObjects);
-}
-
 void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
 {
     m_openGLFunctions = openGLFunctions;
 
     // Detect and load asset paths
-    m_gfxAssetRegistryModule = std::make_unique<gfx::GfxAssetRegistry>();
+    m_AssetRegistryModule = std::make_unique<AssetRegistry>();
 
     // Load up all the detected textures
-    m_textureManagerModule = std::make_unique<gfx::TextureManager>(m_gfxAssetRegistryModule.get(), m_openGLFunctions);
-
-    // Get the shader paths (from test data)
-    std::vector<ShaderProgramFilePaths> shaderSources = m_gfxAssetRegistryModule->loadShaderPathSet(shaderFilenames);
+    m_textureManagerModule = std::make_unique<gfx::TextureManager>(m_AssetRegistryModule.get(), m_openGLFunctions);
 
     // Load and compile shaders
-    m_shaderManagerModule = std::make_unique<gfx::ShaderManager>(shaderSources, m_openGLFunctions);
+    m_shaderManagerModule = std::make_unique<gfx::ShaderManager>(m_AssetRegistryModule.get(), m_openGLFunctions);
     
     // Init mesh manager
     m_meshManagerModule = std::make_unique<gfx::MeshManager>(m_openGLFunctions);
@@ -60,10 +37,7 @@ void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
     // Init Lighting System
     m_lightingSystemModule = std::make_unique<gfx::LightingSystem>();
 
-    initTestModule();
-
-    m_testModule->initTestData();
-
+    // Render init
     m_renderModule = std::make_unique<gfx::Renderer>(openGLFunctions);
     m_renderSystemModule = std::make_unique<gfx::RenderSystem>();
 

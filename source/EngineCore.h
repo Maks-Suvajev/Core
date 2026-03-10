@@ -15,7 +15,7 @@
 
 // Resource managers
 #include "ShaderManager.h"
-#include "GfxAssetRegistry.h"
+#include "AssetRegistry.h"
 #include "TextureManager.h"
 #include "MeshManager.h"
 #include "MaterialManager.h"
@@ -32,8 +32,6 @@
 
 #include "ShaderTypes.h"
 
-// Test data loader
-#include "Test.h"
 
 class EngineCore : public QObject
 {
@@ -60,7 +58,7 @@ class EngineCore : public QObject
         std::unique_ptr<gfx::Camera>            m_cameraModule;
         
         // Asset management
-        std::unique_ptr<gfx::GfxAssetRegistry>  m_gfxAssetRegistryModule; // loads and stores paths for different assets
+        std::unique_ptr<AssetRegistry>          m_AssetRegistryModule; // loads paths for different asset types
         std::unique_ptr<gfx::ShaderManager>     m_shaderManagerModule; // Manages compiling, storing and accessing shaders
         std::unique_ptr<gfx::TextureManager>    m_textureManagerModule; // Manages loading and storing textures
         std::unique_ptr<gfx::MeshManager>       m_meshManagerModule; // Manages loading and storing Meshes
@@ -73,9 +71,6 @@ class EngineCore : public QObject
 
         // Components and Entities
         std::unique_ptr<EntityManager>          m_entityManagerModule; // Manages entities. their components and lifetimes
-
-        // Test - Will be replaced by GUI
-        std::unique_ptr<Test>                   m_testModule;
 
         QOpenGLExtraFunctions*                  m_openGLFunctions;
 };
