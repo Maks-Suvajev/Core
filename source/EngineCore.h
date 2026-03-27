@@ -44,7 +44,6 @@ class EngineCore : public QObject
         EngineCore() = default;
         void init(QOpenGLExtraFunctions* openGLFunctions);
         void runStep();
-        void initTestModule(); // Pass resources to test module - required before GUI implmented.
         void updateResolution(float width, float height);
 
         // Data access for frontend QT models
@@ -53,6 +52,11 @@ class EngineCore : public QObject
             return m_textureManagerModule.get();
         }
 
+        gfx::ShaderManager* getShaderManager()
+        {
+            return m_shaderManagerModule.get();
+        }
+        
     private:
 
         std::unique_ptr<gfx::Camera>            m_cameraModule;
