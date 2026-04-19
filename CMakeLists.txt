@@ -8,7 +8,11 @@ add_library(CoreLib
     ${CORE_MOC_FILES}
 )
 
-target_include_directories(CoreLib PUBLIC source)
+
+target_include_directories(CoreLib 
+                            PUBLIC 
+                                source
+                                ${DEPS_ASSIMP_DIR}/include)
 
 find_package(Qt6 REQUIRED COMPONENTS OpenGL Widgets)
 
@@ -18,4 +22,5 @@ target_link_libraries(CoreLib
         Qt6::OpenGL
         ResourceManagersLib
         ECSLib
+        assimp
 ) 

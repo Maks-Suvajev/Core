@@ -26,7 +26,7 @@ void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
     m_shaderManagerModule = std::make_unique<gfx::ShaderManager>(m_AssetRegistryModule.get(), m_openGLFunctions);
     
     // Init mesh manager
-    m_meshManagerModule = std::make_unique<gfx::MeshManager>(m_openGLFunctions);
+    m_sceneModelManagerModule = std::make_unique<gfx::SceneModelManager>(m_AssetRegistryModule.get(), m_openGLFunctions);
 
     // Init material manager
     m_materialManagerModule = std::make_unique<gfx::MaterialManager>();
@@ -47,4 +47,17 @@ void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
 void EngineCore::runStep()
 {
     m_renderSystemModule->runRender(m_cameraModule.get(), m_renderModule.get(), m_entityManagerModule.get(), m_lightingSystemModule.get(), m_shaderManagerModule.get());
+
+    if (m_shaderManagerModule->shaderAvailable())
+    {
+        for (auto& [key, shader] : m_shaderManagerModule->getCompiledMap())
+        {
+            shader->useProgram();
+            shader->updateViewMatrixValue(m_cameraModule.get()->calculateViewMatrix());
+            shader->updateProjectionMatrixValue(m_cameraModule.get()->calculateProjectionMatrix());
+
+            m_sceneModelManagerModule->drawScene(shader.get());
+            break;
+        }
+    }
 }

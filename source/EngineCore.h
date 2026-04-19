@@ -17,7 +17,7 @@
 #include "ShaderManager.h"
 #include "AssetRegistry.h"
 #include "TextureManager.h"
-#include "MeshManager.h"
+#include "SceneModelManager.h"
 #include "MaterialManager.h"
 
 // Entities
@@ -56,6 +56,11 @@ class EngineCore : public QObject
         {
             return m_shaderManagerModule.get();
         }
+
+        gfx::SceneModelManager* getSceneModelManager()
+        {
+            return m_sceneModelManagerModule.get();
+        }
         
     private:
 
@@ -65,7 +70,7 @@ class EngineCore : public QObject
         std::unique_ptr<AssetRegistry>          m_AssetRegistryModule; // loads paths for different asset types
         std::unique_ptr<gfx::ShaderManager>     m_shaderManagerModule; // Manages compiling, storing and accessing shaders
         std::unique_ptr<gfx::TextureManager>    m_textureManagerModule; // Manages loading and storing textures
-        std::unique_ptr<gfx::MeshManager>       m_meshManagerModule; // Manages loading and storing Meshes
+        std::unique_ptr<gfx::SceneModelManager> m_sceneModelManagerModule; // Manages loading and storing models
         std::unique_ptr<gfx::MaterialManager>   m_materialManagerModule; // Manages storing different material configurations
 
         // Systems
@@ -77,6 +82,7 @@ class EngineCore : public QObject
         std::unique_ptr<EntityManager>          m_entityManagerModule; // Manages entities. their components and lifetimes
 
         QOpenGLExtraFunctions*                  m_openGLFunctions;
+        
 };
 
 
