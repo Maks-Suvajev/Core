@@ -24,12 +24,12 @@ void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
 
     // Load and compile shaders
     m_shaderManagerModule = std::make_unique<gfx::ShaderManager>(m_AssetRegistryModule.get(), m_openGLFunctions);
-    
-    // Init mesh manager
-    m_sceneModelManagerModule = std::make_unique<gfx::SceneModelManager>(m_AssetRegistryModule.get(), m_openGLFunctions);
 
     // Init material manager
     m_materialManagerModule = std::make_unique<gfx::MaterialManager>();
+
+    // Init scene model manager
+    m_sceneModelManagerModule = std::make_unique<gfx::SceneModelManager>(m_AssetRegistryModule.get(), m_textureManagerModule.get(), m_materialManagerModule.get(), m_openGLFunctions);
 
     // Init entity manager
     m_entityManagerModule = std::make_unique<EntityManager>();
