@@ -61,6 +61,12 @@ class EngineCore : public QObject
         {
             return m_sceneModelManagerModule.get();
         }
+
+
+        EntityManager* getEntityManager()
+        {
+            return m_entityManagerModule.get();
+        }
         
     private:
 
