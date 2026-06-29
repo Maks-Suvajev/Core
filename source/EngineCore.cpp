@@ -34,6 +34,7 @@ void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
     // Init entity manager
     m_entityManagerModule = std::make_unique<EntityManager>();
 
+
     // Init Lighting System
     m_lightingSystemModule = std::make_unique<gfx::LightingSystem>();
 
@@ -46,7 +47,7 @@ void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
 
 void EngineCore::runStep()
 {
-    m_renderSystemModule->runRender(m_cameraModule.get(), m_renderModule.get(), m_entityManagerModule.get(), m_lightingSystemModule.get(), m_shaderManagerModule.get());
+    //m_renderSystemModule->runRender(m_cameraModule.get(), m_renderModule.get(), m_entityManagerModule.get(), m_lightingSystemModule.get(), m_shaderManagerModule.get());
 
     if (m_shaderManagerModule->shaderAvailable())
     {
@@ -57,7 +58,6 @@ void EngineCore::runStep()
             shader->updateProjectionMatrixValue(m_cameraModule.get()->calculateProjectionMatrix());
 
             m_sceneModelManagerModule->drawScene(shader.get());
-            break;
         }
     }
 }
