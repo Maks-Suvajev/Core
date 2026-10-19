@@ -22,6 +22,7 @@
 
 // Entities
 #include "EntityManager.h"
+#include "EntityFactory.h"
 
 // Components
 #include "ComponentManager.h"
@@ -86,6 +87,8 @@ class EngineCore : public QObject
 
         // Components and Entities
         std::unique_ptr<EntityManager>          m_entityManagerModule; // Manages entities. their components and lifetimes
+        std::unique_ptr<EntityFactory>          m_entityFactoryModule; // Manages entities. their components and lifetimes
+
 
         QOpenGLExtraFunctions*                  m_openGLFunctions;
         

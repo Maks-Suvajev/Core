@@ -28,12 +28,12 @@ void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
     // Init material manager
     m_materialManagerModule = std::make_unique<gfx::MaterialManager>();
 
-    // Init scene model manager
-    m_sceneModelManagerModule = std::make_unique<gfx::SceneModelManager>(m_AssetRegistryModule.get(), m_textureManagerModule.get(), m_materialManagerModule.get(), m_openGLFunctions);
-
     // Init entity manager
     m_entityManagerModule = std::make_unique<EntityManager>();
+    m_entityFactoryModule = std::make_unique<EntityFactory>(m_entityManagerModule.get(), m_materialManagerModule.get());
 
+    // Init scene model manager
+    m_sceneModelManagerModule = std::make_unique<gfx::SceneModelManager>(m_AssetRegistryModule.get(), m_textureManagerModule.get(), m_materialManagerModule.get(), m_entityFactoryModule.get(), m_openGLFunctions);
 
     // Init Lighting System
     m_lightingSystemModule = std::make_unique<gfx::LightingSystem>();
@@ -47,17 +47,17 @@ void EngineCore::init(QOpenGLExtraFunctions* openGLFunctions)
 
 void EngineCore::runStep()
 {
-    //m_renderSystemModule->runRender(m_cameraModule.get(), m_renderModule.get(), m_entityManagerModule.get(), m_lightingSystemModule.get(), m_shaderManagerModule.get());
+    m_renderSystemModule->runRender(m_cameraModule.get(), m_renderModule.get(), m_entityManagerModule.get(), m_lightingSystemModule.get(), m_shaderManagerModule.get());
 
-    if (m_shaderManagerModule->shaderAvailable())
-    {
-        for (auto& [key, shader] : m_shaderManagerModule->getCompiledMap())
-        {
-            shader->useProgram();
-            shader->updateViewMatrixValue(m_cameraModule.get()->calculateViewMatrix());
-            shader->updateProjectionMatrixValue(m_cameraModule.get()->calculateProjectionMatrix());
+    // if (m_shaderManagerModule->shaderAvailable())
+    // {
+    //     for (auto& [key, shader] : m_shaderManagerModule->getCompiledMap())
+    //     {
+    //         shader->useProgram();
+    //         shader->updateViewMatrixValue(m_cameraModule.get()->calculateViewMatrix());
+    //         shader->updateProjectionMatrixValue(m_cameraModule.get()->calculateProjectionMatrix());
 
-            m_sceneModelManagerModule->drawScene(shader.get());
-        }
-    }
+    //         m_sceneModelManagerModule->drawScene(shader.get());
+    //     }
+    // }
 }
